@@ -20,7 +20,7 @@ def enter_income():
 
 def submit_fixed_costs():
     st.session_state["submitted_fixed_costs"] = True
-    st.session_state["total_cost"] = 
+    # st.session_state["total_cost"] = st.session_state.fixed_costs.Amount.sum()
 
 def enter_fixed_costs():
     st.write("First let's record your monthly recurring costs (aka \"fixed\"). If you have an annual cost, hold that for the savings section.")
@@ -30,6 +30,7 @@ def enter_fixed_costs():
 
 def submit_investments():
     st.session_state["submitted_investments"] = True
+    st.session_state["total_cost"] += st.investments.Amount.sum()
 
 def enter_investments():
     st.write("Now record your monthly contribution to your retirement account(s). Include your employer's contribution if you have one")
@@ -38,6 +39,7 @@ def enter_investments():
 
 def submit_savings():
     st.session_state["submitted_savings"] = True
+    st.session_state["total_cost"] += st.savings.Amount.sum()
 
 def enter_savings():
     st.write("Pick a few savings goals you'd like to contribute to every month. A few common ones are for a vacation or emergency fund.")

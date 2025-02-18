@@ -1,0 +1,7 @@
+{
+"Goals": {
+    "fixed_costs": [50, 60],
+    "savings": [10, 10],
+    "investments": [10, 15],
+    "guilt_free": [20,30]}
+}
