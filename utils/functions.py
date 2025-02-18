@@ -20,7 +20,7 @@ def enter_income():
 
 def submit_fixed_costs():
     st.session_state["submitted_fixed_costs"] = True
-    # st.session_state["total_cost"] = st.session_state.fixed_costs.Amount.sum()
+    # st.session_state["total_cost"] = 
 
 def enter_fixed_costs():
     st.write("First let's record your monthly recurring costs (aka \"fixed\"). If you have an annual cost, hold that for the savings section.")
