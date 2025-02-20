@@ -2,18 +2,16 @@ import streamlit as st
 from utils.functions import *
 
 st.set_page_config(layout = 'wide')
+st.title("I Will Teach You to Budget")
 
-if "initialized" not in st.session_state:
+if "step" not in st.session_state:
     initialize_dashboard()
 
-if "submitted_income" not in st.session_state:
-    enter_income()
+elif st.session_state.step < len(st.session_state.entry_order):
+    table_name = st.session_state.entry_order[st.session_state.step]
+    df = generate_table(table_name)
+    st.session_state[table_name] = st.data_editor(df, num_rows = 'dynamic')
+    st.button("Submit", on_click = increment_step)
 
-if "submitted_fixed_costs" not in st.session_state:
-    enter_fixed_costs()
-
-if "submitted_investments" not in st.session_state:
-    enter_investments()
-
-if "submitted_savings" not in st.session_state:
-    enter_savings()
+else:
+    pass

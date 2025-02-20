@@ -3,5 +3,16 @@
     "fixed_costs": [50, 60],
     "savings": [10, 10],
     "investments": [10, 15],
-    "guilt_free": [20,30]}
+    "guilt_free": [20,30]},
+"dashboard": {
+    "entry_order": ["assets", "debt", "income", "fixed_costs", "savings_goals", "investments"]
+},
+"dataframe_columns": {
+    "assets": ["Asset", "Amount"],
+    "debt": ["Debt", "Amount"],
+    "income": ["Source", "Amount"],
+    "fixed_costs": ["Fixed Cost", "Amount", "Category"],
+    "savings_goals": ["Goal", "Amount"],
+    "investments": ["Investment", "Amount"]
+}
 }
