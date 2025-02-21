@@ -13,10 +13,14 @@ def initialize_dashboard():
     st.session_state["step"] = 0
     st.session_state["config"] = json.load(open(repo_dir + "/utils/config.json"))
     st.session_state["entry_order"] = st.session_state.config["dashboard"]["entry_order"]
+    st.session_state["table_edited"] = False
     st.button("Get Started!")  
 
 def increment_step():
     st.session_state.step += 1
+
+def table_edited():
+    st.session_state["table_edited"] = True
 
 def generate_table(table_name):
     if table_name == "assets":
