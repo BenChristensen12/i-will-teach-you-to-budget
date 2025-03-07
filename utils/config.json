@@ -3,16 +3,57 @@
     "fixed_costs": [50, 60],
     "savings": [10, 10],
     "investments": [10, 15],
-    "guilt_free": [20,30]},
-"dashboard": {
-    "entry_order": ["assets", "debt", "income", "fixed_costs", "savings_goals", "investments"],
-    "headers": {
-        "assets": "Assets",
-        "debt": "Debt",
-        "income": "Income",
-        "fixed_costs": "Fixed Costs",
-        "savings_goals": "Savings Goals",
-        "investments": "Investments"
+    "guilt_free": [20, 30]},
+"Pages": {
+    "Net_Worth": {
+        "tables": {
+            "assets": {
+                "columns": ["Asset", "Amount"],
+                "rows": [["Honda Accord", 3950]]
+            }, 
+            "debt": {
+                "columns": ["Debt", "Amount"],
+                "rows": [["Honda Accord", 600]]
+            }
+    },
+    "Income": {
+        "tables": {
+            "income": {
+                "columns": ["Source", "Amount"],
+                "rows": [["Day Job", 0]]
+            }            
+        }
+    },
+    "Fixed_Costs": {
+        "tables": {
+            "fixed_costs": {
+                "columns": ["Fixed_Cost", "Amount", "Category"],
+                "rows": [["Rent", 100, "Housing"],
+                         ["Car Payment", 50, "Debt"],
+                         ["Utilities", 10, "Housing"]]
+            }            
+        }
+    
+    },
+    "Savings_Goals": {
+        "tables": {
+            "savings_goals": {
+                "columns": ["Goal", "Amount"],
+                "rows": [["Emergency Fund", 100],
+                         ["Vacation", 20]]
+            }            
+        }
+    
+    },
+    "Investments": {
+        "tables": {
+            "investments": {
+                "columns": ["Investment", "Amount"],
+                "rows": [["Employer Contribution 401k", 0],
+                         ["Roth IRA", 0]]
+            }            
+        }
+    
     }
-}
-}
+    
+}}}
