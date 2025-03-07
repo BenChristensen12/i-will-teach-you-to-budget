@@ -1,4 +1,4 @@
 @echo off
 echo Starting I Will Teach You to Budget...
-streamlit run dashboard.py
+streamlit run Instructions.py
 pause
