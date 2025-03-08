@@ -19,6 +19,8 @@ def edit_data(page):
 
     st.session_state["changed_tables"] = dict()
     for table in st.session_state.config["Pages"][page]["tables"]:
+        st.header(st.session_state.config["Headers"][table])
+        st.write(st.session_state.config["Pages"][page]["tables"][table]["preamble"])
         if table in st.session_state:
             df = st.session_state[table].copy()
             edited_df = st.data_editor(df, num_rows = 'dynamic')

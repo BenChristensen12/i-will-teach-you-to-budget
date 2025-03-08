@@ -14,8 +14,8 @@ st.markdown("""This budget consists of 5 sections: 1. Net Worth 2. Fixed Costs 3
          is calculated as whatever money is leftover.""")
 
 st.header("Progress:")
-completed_tasks = [x in st.session_state for x in ["completed_net_worth", "completed_fixed_costs", "completed_savings", "completed_investments"]]
-tasks = ["Net Worth", "Fixed Costs", "Savings Goals", "Investments"]
+completed_tasks = [x in st.session_state for x in ["completed_Net_Worth", "completed_Income", "completed_Fixed_Costs", "completed_Savings_Goals", "completed_Investments"]]
+tasks = ["Net Worth", "Income", "Fixed Costs", "Savings Goals", "Investments"]
 for i, task_completion in enumerate(completed_tasks):
     st.checkbox(tasks[i], value = task_completion, disabled = True)
 
