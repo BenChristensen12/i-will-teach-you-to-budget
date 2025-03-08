@@ -13,11 +13,7 @@ st.markdown("""This budget consists of 5 sections: 1. Net Worth 2. Fixed Costs 3
          To build the budget we've separated each of these sections into pages on the sidebar. When you're finished, guilt-free spending
          is calculated as whatever money is leftover.""")
 
-st.header("Progress:")
-completed_tasks = [x in st.session_state for x in ["completed_Net_Worth", "completed_Income", "completed_Fixed_Costs", "completed_Savings_Goals", "completed_Investments"]]
-tasks = ["Net Worth", "Income", "Fixed Costs", "Savings Goals", "Investments"]
-for i, task_completion in enumerate(completed_tasks):
-    st.checkbox(tasks[i], value = task_completion, disabled = True)
-
 if "dashboard_initialized" not in st.session_state:
-    initialize_dashboard()
+    initialize_dashboard()    
+
+show_progress()
