@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import os
 from matplotlib import pyplot as plt
+import numpy as np
 
 def initialize_dashboard():
     repo_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
