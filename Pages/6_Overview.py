@@ -23,8 +23,8 @@ else:
     df["Percent"] = (df.Amount / total)
 
     #chart showing breakout of budget
-    labels = ["Total Income", "Fixed Costs", "Savings Goals", "Investments", "Guilt-Free"]
-    parents = ["", "Total Income", "Total Income", "Total Income", "Total Income"]    
+    labels = ["Net Income", "Fixed Costs", "Savings Goals", "Investments", "Guilt-Free"]
+    parents = ["", "Net Income", "Net Income", "Net Income", "Net Income"]    
     values = [int(total), df.loc[df.Category == "Fixed Costs", "Amount"].values[0], df.loc[df.Category == "Savings Goals", "Amount"].values[0],df.loc[df.Category == "Investments", "Amount"].values[0], df.loc[df.Category == "Guilt-Free", "Amount"].values[0]]
 
     savings_goals = st.session_state["savings_goals"].copy()
@@ -51,12 +51,11 @@ else:
 
 
     sunburst = go.Figure(go.Sunburst(labels = labels, parents = parents, values = values, branchvalues = "total",))
-    sunburst.update_layout(width = 800, height = 800)
+    sunburst.update_layout(width = 800, height = 800, 
+    sunburstcolorway=["#f4e4d4", "#c4442c", "#047c6c", "#142c2c"])
     st.plotly_chart(sunburst, use_container_width=True, theme= "streamlit")
-
-    labels
-    parents
-    values
+    html_str = sunburst.to_html(full_html = True, include_plotlyjs = "cdn")
+    st.download_button("Download Interactive Chart", data = html_str, file_name = "sunburst_chart.html", mime = "text/html")
 
     # Display data
     df["Percent"] = df["Percent"].apply(lambda x: f"{int(x*100)}%")

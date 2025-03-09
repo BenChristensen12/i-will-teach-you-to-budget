@@ -50,6 +50,3 @@ def edit_data(page):
         button = st.button("Submit", on_click = submit_changes)
     else:
         button = st.button("Submit Changes", on_click = submit_changes)
-
-def save_sunburst(sunburst):
-    sunburst.write_html("download_sunburst.html")
