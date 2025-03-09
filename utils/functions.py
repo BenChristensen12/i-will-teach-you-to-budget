@@ -4,6 +4,8 @@ import json
 import os
 from matplotlib import pyplot as plt
 import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
 
 def initialize_dashboard():
     repo_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,3 +50,6 @@ def edit_data(page):
         button = st.button("Submit", on_click = submit_changes)
     else:
         button = st.button("Submit Changes", on_click = submit_changes)
+
+def save_sunburst(sunburst):
+    sunburst.write_html("download_sunburst.html")

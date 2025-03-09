@@ -17,19 +17,46 @@ else:
         df = pd.concat([df, summed_df])
 
     total = st.session_state.income.Amount.sum()
+
     gf = pd.DataFrame({"Category": ["Guilt-Free"], "Amount": [total - df.Amount.sum()]})
     df = pd.concat([df, gf])
     df["Percent"] = (df.Amount / total)
 
     #chart showing breakout of budget
-    # Plot pie chart
-    fig, ax = plt.subplots()
-    ax.pie(df['Percent'], labels=df['Category'], autopct='%.0f%%', startangle=90)
-    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    labels = ["Total Income", "Fixed Costs", "Savings Goals", "Investments", "Guilt-Free"]
+    parents = ["", "Total Income", "Total Income", "Total Income", "Total Income"]    
+    values = [int(total), df.loc[df.Category == "Fixed Costs", "Amount"].values[0], df.loc[df.Category == "Savings Goals", "Amount"].values[0],df.loc[df.Category == "Investments", "Amount"].values[0], df.loc[df.Category == "Guilt-Free", "Amount"].values[0]]
 
-    # Display in Streamlit
-    st.pyplot(fig)
+    savings_goals = st.session_state["savings_goals"].copy()
+    goals = savings_goals.Goal.tolist()
+    labels += goals
+    parents += ["Savings Goals" for goal in goals]
+    values += savings_goals.Amount.tolist()
 
+    investments = st.session_state["investments"].copy()
+    eaches = investments.Investment.tolist()
+    labels += eaches
+    parents += ["Investments" for each in eaches]
+    values += investments.Amount.tolist()
+
+    fixed_costs = st.session_state["fixed_costs"].copy()
+    grouped_df = fixed_costs.groupby("Category", as_index = False).Amount.sum()
+    categories = grouped_df.Category.tolist()
+    labels += categories
+    parents += ["Fixed Costs" for category in categories]
+    values += grouped_df.Amount.tolist()
+    labels += fixed_costs.Fixed_Cost.tolist()
+    parents += fixed_costs.Category.tolist()
+    values += fixed_costs.Amount.tolist()
+
+
+    sunburst = go.Figure(go.Sunburst(labels = labels, parents = parents, values = values, branchvalues = "total",))
+    sunburst.update_layout(width = 800, height = 800)
+    st.plotly_chart(sunburst, use_container_width=True, theme= "streamlit")
+
+    labels
+    parents
+    values
 
     # Display data
     df["Percent"] = df["Percent"].apply(lambda x: f"{int(x*100)}%")

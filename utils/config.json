@@ -66,7 +66,7 @@
         "tables": {
             "investments": {
                 "columns": ["Investment", "Amount"],
-                "rows": [["Employer Contribution 401k", 0],
+                "rows": [["Employer Contribution 401k", 100],
                          ["Roth IRA", 0]],
                 "preamble": "Here is where wealth is created. Did you know money invested today doubles roughly every 10 years? How much can you afford to invest every month? Use the % goal as a guide. If you don't have enough remaining, we'll go back to the other steps to see what you can cut."
          
