@@ -19,7 +19,7 @@ def update_percentages():
             temp_df["Percent"] = temp_df.Amount / st.session_state.net_income
             temp_df["Percent"] = temp_df["Percent"].apply(lambda x: f"{int(x*100)}%") 
             temp_df.sort_values("Percent", ascending = False, inplace = True)
-            st.session_state[table] = temp_df.copy()     
+            st.session_state[table] = temp_df    
 
 def compile_budget():
     df = pd.DataFrame({"Category": [], "Amount": []})
@@ -36,10 +36,8 @@ def compile_budget():
     # Display data
     df["Percent"] = df["Percent"].apply(lambda x: f"{int(x*100)}%")
     df["Goal"] = ["60%-", "10%+", "10%+", "20%+"]
-    df.sort_values("Percent", ascending = False, inplace = True)
     st.session_state["budget_data"] = df.copy()
        
-
     #chart showing breakout of budget
     labels = ["Net Income", "Fixed Costs", "Savings Goals", "Investments", "Guilt-Free"]
     parents = ["", "Net Income", "Net Income", "Net Income", "Net Income"]    
@@ -68,7 +66,6 @@ def compile_budget():
     values += fixed_costs.Amount.tolist()
     st.session_state["sunburst_data"] = [labels, parents, values]
 
-
 def show_progress():
     st.header("Progress:")
     completed_tasks = [x in st.session_state for x in ["completed_Net_Worth", "completed_Income", "completed_Fixed_Costs", "completed_Savings_Goals", "completed_Investments"]]
@@ -77,13 +74,9 @@ def show_progress():
         st.checkbox(tasks[i], value = task_completion, disabled = True)
     if all(completed_tasks):
         st.session_state["completed_all_tasks"] = True
-        compile_budget()
-        update_percentages()
-        st.rerun()
 
 def submit_changes():
     st.session_state["clicked"] = True
-
 
 def edit_data(page):
     if "clicked" in st.session_state:
@@ -102,12 +95,13 @@ def edit_data(page):
         st.write(st.session_state.config["Pages"][page]["tables"][table]["preamble"])
         if table in st.session_state:
             df = st.session_state[table].copy()
-            edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"])
+            df.reset_index(drop = True, inplace = True)
+            edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
         else:
             rows = st.session_state.config["Pages"][page]["tables"][table]["rows"]
             columns = st.session_state.config["Pages"][page]["tables"][table]["columns"]            
             df = pd.DataFrame(rows, columns = columns)
-            edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"])
+            edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
         st.session_state.changed_tables[table] = edited_df
     if f"completed_{page}" not in st.session_state:
         button = st.button("Submit", on_click = submit_changes)
