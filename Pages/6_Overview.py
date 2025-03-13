@@ -1,8 +1,6 @@
 import streamlit as st
 from utils.functions import *
 
-st.set_page_config(layout = 'wide')
-
 if "completed_all_tasks" not in st.session_state:
     show_progress()
     if "completed_all_tasks" in st.session_state:
@@ -45,6 +43,14 @@ else:
     today = datetime.today().strftime("%Y-%m-%d")
     st.download_button("Download Complete Budget File", data = upload_file, file_name = f"i-will-teach-you-to-budget-session-{today}.pkl", mime = "application/octet-stream")
 
+
+
+
+
+
+    # Adjust number of layers to show in sunburst?
+
+    # Where to show guit-free spending compared to goal?
 
     st.header("Retirement Calculator")
     # Line graph showing increasing assets over time
