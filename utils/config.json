@@ -32,15 +32,18 @@
             "income": {
                 "columns": ["Source", "Amount"],
                 "rows": [["Day Job", 1000]],
-            "preamble": "This is the first table that is a recurring amount instead of fixed. Enter the *monthly* amount of take-home income. If you receive income weekly, a good estimate is to multiply that number by 52 then divide by 12. The formula is (paycheck amount) x (number of paychecks in a year) / 12. Do this for each of your income streams. If you have variable income, use the smallest amount you think you'd receive. We'll deal with excess income later."
+            "preamble": "This is the first table that is a recurring amount instead of fixed. Enter the *monthly* amount of take-home income. Click the Convert paycheck button to automatically turn a paystub into a monthly income stream."
 
             }            
         }
     },
     "Fixed_Costs": {
+        "goal": {
+            ".6": "ceiling"
+        },        
         "tables": {
             "fixed_costs": {
-                "columns": ["Fixed_Cost", "Amount", "Category"],
+                "columns": ["Fixed Cost", "Amount", "Category"],
                 "rows": [["Rent", 100, "Housing"],
                          ["Car Payment", 50, "Debt"],
                          ["Utilities", 10, "Housing"]],
@@ -51,6 +54,9 @@
     
     },
     "Savings_Goals": {
+        "goal": {
+            ".1": "floor"
+        },        
         "tables": {
             "savings_goals": {
                 "columns": ["Goal", "Amount"],
@@ -63,6 +69,9 @@
     
     },
     "Investments": {
+        "goal": {
+            ".1": "floor"
+        },     
         "tables": {
             "investments": {
                 "columns": ["Investment", "Amount"],
