@@ -1,10 +1,6 @@
 streamlit
 pandas
-json
-os
 maptlotlib
 numpy
 plotly
 darkdetect
-pickle
-datetime
