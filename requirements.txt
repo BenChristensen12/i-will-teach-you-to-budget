@@ -1,6 +1,6 @@
 streamlit
 pandas
-maptlotlib
+matplotlib
 numpy
 plotly
 darkdetect
