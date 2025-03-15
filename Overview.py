@@ -4,6 +4,8 @@ from utils.functions import *
 st.set_page_config(layout = 'wide')
 if "dashboard_initialized" not in st.session_state:
     initialize_dashboard()    
+for k, v in st.session_state.items():
+    st.session_state[k] = v     
 st.title("I Will Teach You to Budget")
 
 
@@ -76,14 +78,12 @@ else:
         st.button("Reset Budget", on_click=end_demo)
     
 
-    # Adjust investments goal based on retirement calculator
-    # Where to put retirement calculator?
-        # In investments page. 
-    # Combine Overview with Instructions
-
-
     # Adjust number of layers to show in sunburst?
 
     # Where to show guit-free spending compared to goal?
    
    # Add progress bars to overview page showing green and red and the goals
+
+   # Adjust all inputs to be float at 2-decimals instead of int
+
+   # Want to change investment goal after retirement calculator?

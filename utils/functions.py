@@ -16,6 +16,26 @@ def initialize_dashboard():
     st.session_state["uploaded_file_name"] = None
     st.session_state["dashboard_initialized"] = True
 
+def calculate_portfolio(principal, monthly_contribution, annual_return, years):
+    monthly_rate = annual_return / 12
+    portfolio_values = []
+
+    months = int(12*years)
+    for month in range(months + 1):
+        if month == 0:
+            total_value = principal
+        else:
+            total_value = total_value * (1 + monthly_rate) + monthly_contribution
+        portfolio_values.append(total_value)
+
+    return portfolio_values
+
+def calculate_needed_contribution(portfolio_needed, principal, rate, years):
+    months = int(12*years)
+    monthly_rate = rate / 12
+    return (portfolio_needed - principal * (1 + monthly_rate) ** months) / (((1 + monthly_rate) ** months - 1) / monthly_rate)
+
+
 def update_percentages():
     for page in st.session_state.config["Pages"].keys():
         if page != "Net_Worth":
@@ -93,7 +113,10 @@ def progress_bar(page):
     goal, goal_type =  list(st.session_state.config["Pages"][page]["goal"].items())[0]
     goal = float(goal)
     value = float(df.Amount.values[0])
-    target = int(goal*st.session_state.net_income)
+    if page == "Investments" and "dollar_goal" in st.session_state:
+        target = st.session_state.dollar_goal
+    else:
+        target = int(goal*st.session_state.net_income)
     title = "Progress"
     delta = abs(int(target-value))
     if goal_type == "floor":
@@ -184,14 +207,6 @@ def progress_bar(page):
     # Display in Streamlit
     st.plotly_chart(fig)
 
-def end_demo():
-    del st.session_state["completed_all_tasks"]
-    for page in st.session_state.config["Pages"].keys():
-        del st.session_state[f"completed_{page}"]
-        tables = st.session_state.config["Pages"][page]["tables"].keys()
-        for table in tables:
-            del st.session_state[table]
-    del st.session_state.in_demo
 
 def run_demo():
     st.session_state["in_demo"] = True
@@ -203,6 +218,16 @@ def run_demo():
             columns = st.session_state.config["Pages"][page]["tables"][table]["columns"]            
             df = pd.DataFrame(rows, columns = columns)
             st.session_state[table] = df.copy()
+
+def end_demo():
+    del st.session_state["completed_all_tasks"]
+    for page in st.session_state.config["Pages"].keys():
+        del st.session_state[f"completed_{page}"]
+        tables = st.session_state.config["Pages"][page]["tables"].keys()
+        for table in tables:
+            del st.session_state[table]
+    del st.session_state.in_demo
+
 
 def edit_data(page):
     if "clicked_submit" in st.session_state:
