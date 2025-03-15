@@ -7,4 +7,6 @@ st.title(page.replace("_", " "))
 
 edit_data(page)
 
-# Retirement calculator
+
+st.header("Retirement Calculator")
+# Line graph showing increasing assets over time     

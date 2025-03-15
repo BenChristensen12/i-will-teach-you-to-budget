@@ -184,8 +184,27 @@ def progress_bar(page):
     # Display in Streamlit
     st.plotly_chart(fig)
 
-def edit_data(page):
+def end_demo():
+    del st.session_state["completed_all_tasks"]
+    for page in st.session_state.config["Pages"].keys():
+        del st.session_state[f"completed_{page}"]
+        tables = st.session_state.config["Pages"][page]["tables"].keys()
+        for table in tables:
+            del st.session_state[table]
+    del st.session_state.in_demo
 
+def run_demo():
+    st.session_state["in_demo"] = True
+    for page in st.session_state.config["Pages"].keys():
+        st.session_state[f"completed_{page}"] = True
+        tables = st.session_state.config["Pages"][page]["tables"].keys()
+        for table in tables:
+            rows = st.session_state.config["Pages"][page]["tables"][table]["rows"]            
+            columns = st.session_state.config["Pages"][page]["tables"][table]["columns"]            
+            df = pd.DataFrame(rows, columns = columns)
+            st.session_state[table] = df.copy()
+
+def edit_data(page):
     if "clicked_submit" in st.session_state:
         del st.session_state.clicked_submit
         st.session_state[f"completed_{page}"] = True
@@ -205,9 +224,8 @@ def edit_data(page):
             df.reset_index(drop = True, inplace = True)
             edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
         else:
-            rows = st.session_state.config["Pages"][page]["tables"][table]["rows"]
             columns = st.session_state.config["Pages"][page]["tables"][table]["columns"]            
-            df = pd.DataFrame(rows, columns = columns)
+            df = pd.DataFrame(columns = columns)
             edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
         
         st.session_state.changed_tables[table] = edited_df.dropna(subset=[col for col in df.columns if col != "Percent"])
