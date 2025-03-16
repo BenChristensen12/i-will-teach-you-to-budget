@@ -18,11 +18,8 @@ if "completed_all_tasks" not in st.session_state:
     st.write("Welcome to I Will Teach You to Budget!")
     st.write("""This free-to-use tool will help you create a budget. The hardest part is remembering the logins to all your accounts.
     We'll also calculate your net worth and plug-in numbers into an investment calculator to show what you could have in retirement.
-    Each section of the budget has percentage goals that will guide your budget decisions. These are based on Ramit Sethi's book
-    *I Will Teach You to Be Rich*, so consider checking out his book if you like this tool.""")
-    st.markdown("""This budget consists of 5 sections: 1. Net Worth 2. Fixed Costs 3. Savings Goals 4. Investments 5. Guilt-Free Spending.
-            To build the budget we've separated each of these sections into pages on the sidebar. When you're finished, guilt-free spending
-            is calculated as whatever money is leftover.""")
+    The general approach is inspired by Ramit Sethi's book *I Will Teach You to Be Rich*, so consider checking out his book if you 
+    like this tool.""")
 
     uploaded_file = st.file_uploader("Upload Previously Completed Budget", type='pkl')
     if uploaded_file is not None:
@@ -38,14 +35,19 @@ if "completed_all_tasks" not in st.session_state:
         compile_budget()
         update_percentages()
         st.rerun()       
-    st.write("Complete the above tasks and then return to this page.")
+    st.write("Complete the above tasks via the sidebar and then return to this page.")
     st.button("Run Demo", on_click = run_demo)
 
 
 else:
     upload_file = pickle.dumps(dict(st.session_state))
-    today = datetime.today().strftime("%Y-%m-%d")    
+    today = datetime.today().strftime("%Y-%m-%d")  
+    st.write("""Congratulations on completing your budget! Below are summaries of your budget. You can save your progress at any time by clicking the 
+             download button below. You can upload the downloaded file during your next session.""")      
     st.download_button("Download Your Saved Progress File", data = upload_file, file_name = f"i-will-teach-you-to-budget-session-{today}.pkl", mime = "application/octet-stream")
+    st.write("""Your budget categories have been benchmarked against the goals listed in Ramit Sethi's book *I Will Teach You to be Rich.*
+             Consider adjusting your budget to meet his percentage goals. When you are satisified, his book details how to automate
+             these changes so you can follow-through on your decisions made here. Remember that the retirement calculator is available on the Investments page.""")
     st.header("Budget Overview")
     labels, parents, values = st.session_state.sunburst_data
     category_colors = {"Net Income": "rgba(0, 0, 0, 0)",
@@ -87,5 +89,7 @@ else:
 
    # Adjust all inputs to be float at 2-decimals instead of int
 
-   # Replace dark detect with just having default to dark?
+   # Fix dark detect method
 
+# Add column to investments for if the investment amount comes out of their paycheck
+# Hide retirement calculator until budget is finished
