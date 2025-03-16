@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-import darkdetect
+from streamlit_javascript import st_javascript
 import pickle
 from datetime import datetime
 import time
@@ -157,7 +157,10 @@ def progress_bar(page):
         )
     )
     # Add vertical target line
-    target_color = "white" if darkdetect.isDark() else "black"
+    theme_js = """
+    document.body.getAttribute('data-theme');
+    """
+    target_color = "white" if st_javascript(theme_js) == "dark" else "black"
     fig.add_shape(
         type="line",
         x0=target,
@@ -251,7 +254,10 @@ def all_progress_bars():
         )
 
         # Add vertical goal line for each entry
-        target_color = "white" if darkdetect.isDark() else "black"
+        theme_js = """
+        document.body.getAttribute('data-theme');
+        """
+        target_color = "white" if st_javascript(theme_js) == "dark" else "black"
         fig.add_shape(
             type="line",
             x0=target,

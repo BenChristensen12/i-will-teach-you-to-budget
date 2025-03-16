@@ -85,9 +85,6 @@ else:
 
     # Improve preambles
 
-    # Where to show guit-free spending compared to goal?
-        # Add progress bars to overview page showing green and red and the goals
-
    # Adjust all inputs to be float at 2-decimals instead of int
 
    # Replace dark detect with just having default to dark?
