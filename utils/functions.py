@@ -47,14 +47,14 @@ def update_percentages():
             for table in st.session_state.config["Pages"][page]["tables"].keys():
                 temp_df = st.session_state[table]
                 temp_df["Percent"] = temp_df.Amount / st.session_state.net_income
-                temp_df["Percent"] = temp_df["Percent"].apply(lambda x: f"{int(x*100)}%") 
+                temp_df["Percent"] = temp_df.loc[~temp_df.Percent.isna(), "Percent"].apply(lambda x: f"{int(x*100)}%") 
                 temp_df.sort_values("Amount", ascending = False, inplace = True)
                 st.session_state[table] = temp_df    
 
 def compile_budget():
     df = pd.DataFrame({"Category": [], "Amount": []})
     for table in ["fixed_costs", "investments", "savings_goals"]:
-        table_df = st.session_state[table]
+        table_df = st.session_state[table].dropna(subset=[col for col in df.columns if col not in ["Category", "Percent"]])
         summed_df = pd.DataFrame({"Category": [st.session_state.config["Headers"][table]], "Amount": [table_df.Amount.sum()]})
         df = pd.concat([df, summed_df])
 
@@ -325,11 +325,10 @@ def edit_data(page):
         else:
             columns = st.session_state.config["Pages"][page]["tables"][table]["columns"]            
             df = pd.DataFrame(dict(zip(columns, [pd.Series(dtype='str') if col!="Amount" else pd.Series(dtype='float') for col in columns])))
-            st.session_state[table] = df.dropna(subset=[col for col in df.columns if col not in ["Category", "Percent"]])
+            st.session_state[table] = df
             edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
-            time.sleep(.5)
         if not edited_df.equals(st.session_state[table]):
-            st.session_state[table] = edited_df.dropna(subset=[col for col in df.columns if col not in ["Category", "Percent"]])
+            st.session_state[table] = edited_df
             st.session_state[f"completed_{page}"] = True
             if "completed_all_tasks" in st.session_state:
                 compile_budget()
