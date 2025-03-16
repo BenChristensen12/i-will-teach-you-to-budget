@@ -75,7 +75,7 @@
             "investments": {
                 "columns": ["Investment", "Amount"],
                 "rows": [["Roth IRA", 100]],
-                "preamble": "List your monthly contribution toward retirement accounts. Check the box in the *Withheld from Paycheck* column if the amount is invested through an employer benefit plan before you receive your paycheck. Return here for a retirement calculator once you've finished every section."
+                "preamble": "List your monthly contribution toward retirement accounts. If the investment is invested through an employer benefit plan before you receive your paycheck, copy the row and paste it as additional income on the income pagef. Return here for a retirement calculator once you've finished every section."
          
             }            
         }
