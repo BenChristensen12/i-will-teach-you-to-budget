@@ -16,6 +16,10 @@ def initialize_dashboard():
     st.session_state["config"] = json.load(open(repo_dir + "/utils/config.json"))
     st.session_state["uploaded_file_name"] = None
     st.session_state["dashboard_initialized"] = True
+    theme_js = """
+    document.body.getAttribute('data-theme');
+    """    
+    st.session_state["theme"] = st_javascript(theme_js)
 
 def calculate_portfolio(principal, monthly_contribution, annual_return, years):
     monthly_rate = annual_return / 12
@@ -157,10 +161,7 @@ def progress_bar(page):
         )
     )
     # Add vertical target line
-    theme_js = """
-    document.body.getAttribute('data-theme');
-    """
-    target_color = "white" if st_javascript(theme_js) == "dark" else "black"
+    target_color = "white" if st.session_state.theme == "dark" else "black"
     fig.add_shape(
         type="line",
         x0=target,
@@ -254,10 +255,8 @@ def all_progress_bars():
         )
 
         # Add vertical goal line for each entry
-        theme_js = """
-        document.body.getAttribute('data-theme');
-        """
-        target_color = "white" if st_javascript(theme_js) == "dark" else "black"
+        target_color = "white" if st.session_state.theme == "dark" else "black"
+
         fig.add_shape(
             type="line",
             x0=target,
