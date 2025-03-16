@@ -123,7 +123,6 @@ def progress_bar(page):
     delta = abs(int(target-value))
     if goal_type == "floor":
         target_word = "Target Min"
-        
         if value >= target:
             bar_color = "#047c6c"
             rec = f"You have improved upon the target by ${delta}."
@@ -202,6 +201,86 @@ def progress_bar(page):
     
     st.write(rec)
     # Display in Streamlit
+    st.plotly_chart(fig)
+
+def all_progress_bars():
+    df = st.session_state.budget_data.copy()
+    df = df.iloc[:-2]
+    df["goal"] = [.6, .1, .1, .2]
+    df["goal_type"] = ["ceiling", "floor", "floor", "floor"]
+
+    # Create targets for each entry
+    df["Target"] = df.goal * st.session_state.net_income
+    if "dollar_goal" in st.session_state:
+        df.loc[df.Category == "Investments", "Target"] = st.session_state.dollar_goal
+    # Create the horizontal bar plot
+    fig = go.Figure()
+
+    # Add each bar to the figure
+    for idx, row in df.iterrows():
+        value = int(row["Amount"])
+        target = int(row["Target"])
+        goal_type = row["goal_type"]
+        category = row["Category"]  # Label for each entry
+
+        if goal_type == "floor":
+            target_word = "Target Min"
+            if value >= target:
+                bar_color = "#047c6c"
+            else:
+                bar_color = "#c4442c"
+        elif goal_type == "ceiling":
+            target_word = "Target Max"
+            if value <= target:
+                bar_color = "#047c6c"
+            else:
+                bar_color = "#c4442c"
+
+        fig.add_trace(
+            go.Bar(
+                x=[value],
+                y=[category],
+                orientation='h',
+                marker_color=bar_color,
+                text=[f"{value:.0f}"],
+                textposition='auto',
+                textfont=dict(size=14, color="white"),
+                width=0.5  # Consistent bar width
+            )
+        )
+
+        # Add vertical goal line for each entry
+        target_color = "white" if darkdetect.isDark() else "black"
+        fig.add_shape(
+            type="line",
+            x0=target,
+            y0=idx - 0.4,
+            x1=target,
+            y1=idx + 0.4,
+            line=dict(color=target_color, width=4)
+        )
+
+        # Add target annotation without the arrow
+        fig.add_annotation(
+            x=target,
+            y=idx,
+            text=f"{target_word}: {target:.0f}",
+            showarrow=False,
+            font=dict(size=12, color=target_color),
+            xanchor='left'
+        )
+
+    # Update layout for transparency and improved visibility
+    fig.update_layout(
+        width=600,
+        height=300 + len(df) * 30,  # Dynamic height based on number of entries
+        showlegend=False,
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        # xaxis=dict(range=[0, max(df["Amount"].max(), df["Target"].max()) * 1.1], showgrid=False),
+        yaxis=dict(showgrid=False, showticklabels=True)
+    )
+
     st.plotly_chart(fig)
 
 
