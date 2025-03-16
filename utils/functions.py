@@ -49,7 +49,7 @@ def update_percentages():
 
 def compile_budget():
     df = pd.DataFrame({"Category": [], "Amount": []})
-    for table in ["fixed_costs", "savings_goals", "investments"]:
+    for table in ["fixed_costs", "investments", "savings_goals"]:
         table_df = st.session_state[table]
         summed_df = pd.DataFrame({"Category": [st.session_state.config["Headers"][table]], "Amount": [table_df.Amount.sum()]})
         df = pd.concat([df, summed_df])
@@ -208,6 +208,7 @@ def all_progress_bars():
     df = df.iloc[:-2]
     df["goal"] = [.6, .1, .1, .2]
     df["goal_type"] = ["ceiling", "floor", "floor", "floor"]
+    df = df.iloc[::-1].reset_index(drop=True)    
 
     # Create targets for each entry
     df["Target"] = df.goal * st.session_state.net_income
