@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 import darkdetect
 import pickle
 from datetime import datetime
+import time
 
 def initialize_dashboard():
     repo_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -85,6 +86,7 @@ def compile_budget():
     values += investments.Amount.tolist()
 
     fixed_costs = st.session_state["fixed_costs"].copy()
+    fixed_costs.loc[fixed_costs.Category == "", "Category"] = "Misc."
     grouped_df = fixed_costs.groupby("Category", as_index = False).Amount.sum()
     categories = grouped_df.Category.tolist()
     labels += categories
@@ -137,10 +139,8 @@ def progress_bar(page):
             bar_color = "#c4442c"
             rec = f"You have overspent the target by ${delta}."
         
-    
     # Create the horizontal bar
     fig = go.Figure()
-    
     # Add the bar with increased width and better text formatting
     fig.add_trace(
         go.Bar(
@@ -157,7 +157,6 @@ def progress_bar(page):
             width=10  # Increased bar width (was 0.4)
         )
     )
-    
     # Add vertical target line
     target_color = "white" if darkdetect.isDark() else "black"
     fig.add_shape(
@@ -172,7 +171,6 @@ def progress_bar(page):
             dash="solid"
         )
     )
-    
     fig.add_annotation(
         x = target,
         y=6,
@@ -185,7 +183,6 @@ def progress_bar(page):
         align='right',
         xanchor='right'
         )
-
     # Update layout for transparent background and size
     fig.update_layout(
         width=600,
@@ -229,15 +226,7 @@ def end_demo():
     del st.session_state.in_demo
 
 
-def edit_data(page):
-    if "clicked_submit" in st.session_state:
-        del st.session_state.clicked_submit
-        st.session_state[f"completed_{page}"] = True
-        st.session_state.update(st.session_state.changed_tables)
-        if "completed_all_tasks" in st.session_state:
-            compile_budget()
-            update_percentages()        
-
+def edit_data(page): 
     st.session_state["changed_tables"] = dict()
     tables = st.session_state.config["Pages"][page]["tables"].keys()
     for table in tables:
@@ -250,14 +239,18 @@ def edit_data(page):
             edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
         else:
             columns = st.session_state.config["Pages"][page]["tables"][table]["columns"]            
-            df = pd.DataFrame(columns = columns)
+            df = pd.DataFrame(dict(zip(columns, [pd.Series(dtype='str') if col!="Amount" else pd.Series(dtype='float') for col in columns])))
+            st.session_state[table] = df.dropna(subset=[col for col in df.columns if col not in ["Category", "Percent"]])
             edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
+            time.sleep(.5)
+        if not edited_df.equals(st.session_state[table]):
+            st.session_state[table] = edited_df.dropna(subset=[col for col in df.columns if col not in ["Category", "Percent"]])
+            st.session_state[f"completed_{page}"] = True
+            if "completed_all_tasks" in st.session_state:
+                compile_budget()
+                update_percentages()  
         
-        st.session_state.changed_tables[table] = edited_df.dropna(subset=[col for col in df.columns if col != "Percent"])
-    if f"completed_{page}" not in st.session_state:
-        st.button("Submit", on_click = button_click, args=("clicked_submit",))
-    else:
-        st.button("Submit Changes", on_click = button_click, args=("clicked_submit",))
+
     if ("completed_all_tasks" in st.session_state) & (page not in ["Net_Worth", "Income"]):
         sum_df = st.session_state.budget_data.copy()
         page_name = page.replace("_", " ")

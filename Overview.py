@@ -81,9 +81,10 @@ else:
     # Adjust number of layers to show in sunburst?
 
     # Where to show guit-free spending compared to goal?
-   
-   # Add progress bars to overview page showing green and red and the goals
+        # Add progress bars to overview page showing green and red and the goals
 
    # Adjust all inputs to be float at 2-decimals instead of int
 
-   # Want to change investment goal after retirement calculator?
+   # Replace dark detect with just having default to dark?
+
+   
