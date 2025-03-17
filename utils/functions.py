@@ -282,7 +282,7 @@ def all_progress_bars():
         fig.add_annotation(
             x=target,
             y=idx,
-            text=f"{target_word}: {target:.0f}",
+            text=f"\t{target_word}: {target:.0f}",
             showarrow=False,
             font=dict(size=12, color=target_color),
             xanchor='left'
