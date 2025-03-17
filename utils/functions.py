@@ -173,7 +173,7 @@ def progress_bar(page):
         )
     )
     # Add vertical target line
-    target_color = "white" if st.session_state.theme == "dark" else "#808080"
+    target_color = "white"
     fig.add_shape(
         type="line",
         x0=target,
@@ -267,7 +267,7 @@ def all_progress_bars():
         )
 
         # Add vertical goal line for each entry
-        target_color = "white" if st.session_state.theme == "dark" else "#808080"
+        target_color = "white"
 
         fig.add_shape(
             type="line",
