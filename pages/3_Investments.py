@@ -15,8 +15,8 @@ if "change_investment_target" in st.session_state:
     st.rerun()
 
 st.header("Retirement Calculator")
-if "investments" not in st.session_state:
-    st.write("Submit the above table to unlock the retirement calculator.")
+if "completed_all_tasks" not in st.session_state:
+    st.write("Complete your budget to unlock the retirement calculator.")
 else:
     if "submit_retirement_assumptions" not in st.session_state:
         st.number_input("How many years until you retire?", value = None, key = "yr_until")
