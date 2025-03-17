@@ -31,7 +31,8 @@
         "tables": {
             "income": {
                 "columns": ["Source", "Amount"],
-                "rows": [["Day Job", 1000]],
+                "rows": [["Day Job", 4661],
+                         ["401(k) - before paycheck", 300]],
             "preamble": "Enter your monthly take-home income. Click the Convert paycheck button to automatically turn a paystub into a monthly income stream."
 
             }            
@@ -44,9 +45,11 @@
         "tables": {
             "fixed_costs": {
                 "columns": ["Fixed Cost", "Amount", "Category"],
-                "rows": [["Rent", 100, "Housing"],
-                         ["Car Payment", 50, "Debt"],
-                         ["Utilities", 10, "Housing"]],
+                "rows": [["Rent", 1500, "Housing"],
+                         ["Car Payment", 450, "Debt"],
+                         ["Utilities", 250, "Housing"],
+                         ["Groceries", 650, "Shopping"],
+                         ["Credit Card Payment", 250, "Debt"]],
                 "preamble": "List all of your recurring monthly expenses such as rent, car payment, insurance, mortgage payment, credit card payment, groceries, or subscriptions. Divide annual expenses by 12 months and include them here. Approximate how much you spend monthly on recurring variable expenses such as gasoline or groceries. A credit card statement could help with this. Categories are useful for visualizing your budget but are optional."
          
             }            
@@ -60,8 +63,11 @@
         "tables": {
             "savings_goals": {
                 "columns": ["Goal", "Amount"],
-                "rows": [["Emergency Fund", 100],
-                         ["Vacation", 20]],
+                "rows": [["Emergency Fund", 200],
+                         ["Vacation", 150],
+                        ["Future home repairs", 116],
+                        ["Gifts", 50],
+                        ["Charity", 100]],
                 "preamble": "List monthly contributions to savings goals such as vacation, emergency fund, Christmas gifts, charity, down payment, or medical expenses."
             }            
         }
@@ -74,7 +80,7 @@
         "tables": {
             "investments": {
                 "columns": ["Investment", "Amount"],
-                "rows": [["Roth IRA", 100]],
+                "rows": [["401(k) contribution", 300]],
                 "preamble": "List your monthly contribution toward retirement accounts. If the investment is invested through an employer benefit plan before you receive your paycheck, copy the row and paste it as additional income on the income page. Return here for a retirement calculator once you've finished every section."
          
             }            
