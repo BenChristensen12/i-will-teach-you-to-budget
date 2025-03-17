@@ -81,10 +81,3 @@ else:
         st.download_button("Download Interactive Chart", data = html_str, file_name = "sunburst_chart.html", mime = "text/html")
     if "in_demo" in st.session_state:
         st.button("Reset Budget", on_click=end_demo)
-    
-
-    # Adjust number of layers to show in sunburst?
-
-   # Adjust all inputs to be float at 2-decimals instead of int
-
-   # Fix dark detect method
