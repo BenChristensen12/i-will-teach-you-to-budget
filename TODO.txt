@@ -1,3 +1,4 @@
 - Fix method for detecting whether user is using dark or light mode when viewing the dashboard. This is used to determine whether to draw black or white lines for legibility
 - Validate that all inputs can be entered to the second decimal place and outputs don't expect integers
 - Consider giving the option to limit the number of levels shown in the sunburst chart
+- Improve percent handling so tables are formatted to display percents as desired without changing the float values to and from str
