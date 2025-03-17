@@ -6,11 +6,11 @@ if "dashboard_initialized" not in st.session_state:
     initialize_dashboard()    
 for k, v in st.session_state.items():
     st.session_state[k] = v     
+
+page = os.path.basename(__file__).split('.')[0]
+every_page_run(page)
+
 st.title("I Will Teach You to Budget")
-
-
-import streamlit as st
-from utils.functions import *
 
 if "completed_all_tasks" not in st.session_state:
     if st.session_state.uploaded_file_name is not None:
@@ -85,11 +85,6 @@ else:
 
     # Adjust number of layers to show in sunburst?
 
-    # Improve preambles
-
    # Adjust all inputs to be float at 2-decimals instead of int
 
    # Fix dark detect method
-
-# Add column to investments for if the investment amount comes out of their paycheck
-# Hide retirement calculator until budget is finished

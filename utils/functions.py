@@ -20,6 +20,18 @@ def initialize_dashboard():
     document.body.getAttribute('data-theme');
     """    
     st.session_state["theme"] = st_javascript(theme_js)
+    st.session_state["previous_page"] = None
+
+def every_page_run(page):
+    if st.session_state.previous_page != page:
+        st.session_state.previous_page = page
+        if "changed_tables" in st.session_state:
+            st.session_state.update(st.session_state.changed_tables)
+            del st.session_state.changed_tables
+            if "completed_all_tasks" in st.session_state:
+                compile_budget()
+                update_percentages()  
+        
 
 def calculate_portfolio(principal, monthly_contribution, annual_return, years):
     monthly_rate = annual_return / 12
@@ -318,22 +330,15 @@ def edit_data(page):
         if page == "Net_Worth":
             st.header(st.session_state.config["Headers"][table])
         st.write(st.session_state.config["Pages"][page]["tables"][table]["preamble"])
-        if table in st.session_state:
-            df = st.session_state[table].copy()
-            df.reset_index(drop = True, inplace = True)
-            edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
-        else:
+        if table not in st.session_state:
             columns = st.session_state.config["Pages"][page]["tables"][table]["columns"]            
             df = pd.DataFrame(dict(zip(columns, [pd.Series(dtype='str') if col!="Amount" else pd.Series(dtype='float') for col in columns])))
             st.session_state[table] = df
-            edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
+        df = st.session_state[table].copy()
+        edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
+        st.session_state["changed_tables"][table] = edited_df.reset_index(drop=True)
         if not edited_df.equals(st.session_state[table]):
-            st.session_state[table] = edited_df
             st.session_state[f"completed_{page}"] = True
-            if "completed_all_tasks" in st.session_state:
-                compile_budget()
-                update_percentages()  
-        
 
     if ("completed_all_tasks" in st.session_state) & (page not in ["Net_Worth", "Income"]):
         sum_df = st.session_state.budget_data.copy()

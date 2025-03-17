@@ -6,6 +6,7 @@ for k, v in st.session_state.items():
     st.session_state[k] = v 
 
 page = os.path.basename(__file__).split('_', 1)[1].split('.')[0]
+every_page_run(page)
 st.title(page.replace("_", " "))
 if "clicked_convert_paycheck" in st.session_state:
     source = st.text_input("Enter income source:", value = None)
