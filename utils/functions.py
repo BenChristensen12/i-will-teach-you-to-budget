@@ -334,7 +334,7 @@ def edit_data(page):
             columns = st.session_state.config["Pages"][page]["tables"][table]["columns"]            
             df = pd.DataFrame(dict(zip(columns, [pd.Series(dtype='str') if col!="Amount" else pd.Series(dtype='float') for col in columns])))
             st.session_state[table] = df
-        df = st.session_state[table].copy()
+        df = st.session_state[table].reset_index(drop=True)
         edited_df = st.data_editor(df, num_rows = 'dynamic', disabled = ["Percent"], hide_index = True)
         st.session_state["changed_tables"][table] = edited_df.reset_index(drop=True)
         if not edited_df.equals(st.session_state[table]):
