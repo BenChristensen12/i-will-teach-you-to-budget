@@ -49,15 +49,19 @@ else:
              Consider adjusting your budget to meet his percentage goals. When you are satisified, his book details how to automate
              these changes so you can follow-through on your decisions made here. Remember that the retirement calculator is available on the Investments page.""")
     st.header("Budget Overview")
-    labels, parents, values = st.session_state.sunburst_data
+    labels, ids, parents, values = st.session_state.sunburst_data
     category_colors = {"Net Income": "rgba(0, 0, 0, 0)",
                        "Fixed Costs": "#c4442c",
-                       "Savings Goals": "#047c6c",
-                       "Investments": "#142c2c",
-                       "Guilt-Free": "#f4e4d4"}
-    colors = [category_colors[labels[i]] if labels[i] in category_colors else category_colors.get(parents[i], "#c4442c") for i in range(len(labels))]
-    sunburst = go.Figure(go.Sunburst(labels = labels, parents = parents, values = values, branchvalues = "total",marker = dict(colors=colors)))
-    sunburst.update_layout(width = 600, height = 1000)
+                       "Savings Goals_1": "#047c6c",
+                       "Savings Goals_2": "#047c6c",
+                       "Investments_1": "#142c2c",
+                       "Investments_2": "#142c2c",
+                       "Guilt-Free_1": "#f4e4d4",
+                       "Guilt-Free_2": "#f4e4d4",
+                       "Guilt-Free_3": "#f4e4d4"}
+    colors = [category_colors[ids[i]] if ids[i] in category_colors else category_colors.get(parents[i], "#c4442c") for i in range(len(ids))]
+    sunburst = go.Figure(go.Sunburst(labels = labels, ids = ids, parents = parents, values = values, branchvalues = "total",marker = dict(colors=colors)))
+    sunburst.update_layout(width = 600, height = 700)
     
     col1, col2 = st.columns(2)
     with col1:

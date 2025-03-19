@@ -6,7 +6,6 @@ from matplotlib import pyplot as plt
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-from streamlit_javascript import st_javascript
 import pickle
 from datetime import datetime
 import time
@@ -16,10 +15,6 @@ def initialize_dashboard():
     st.session_state["config"] = json.load(open(repo_dir + "/utils/config.json"))
     st.session_state["uploaded_file_name"] = None
     st.session_state["dashboard_initialized"] = True
-    theme_js = """
-    document.body.getAttribute('data-theme');
-    """    
-    st.session_state["theme"] = st_javascript(theme_js)
     st.session_state["previous_page"] = None
 
 def every_page_run(page):
@@ -82,36 +77,44 @@ def compile_budget():
     df.Amount = df.Amount.astype(int).astype(str)
     df = pd.concat([df.iloc[:-1], pd.DataFrame([{col: "" for col in df.columns}]), df.iloc[-1:]], ignore_index = True)
     st.session_state["budget_data"] = df.copy()
-    df = df.iloc[:-2].copy()
-    df.Amount = df.Amount.astype(int)
     #chart showing breakout of budget
     labels = ["Net Income", "Fixed Costs", "Savings Goals", "Investments", "Guilt-Free"]
-    parents = ["", "Net Income", "Net Income", "Net Income", "Net Income"]    
-    values = [int(st.session_state.net_income), df.loc[df.Category == "Fixed Costs", "Amount"].values[0], df.loc[df.Category == "Savings Goals", "Amount"].values[0],df.loc[df.Category == "Investments", "Amount"].values[0], df.loc[df.Category == "Guilt-Free", "Amount"].values[0]]
+    ids = ["Net Income", "Fixed Costs", "Savings Goals_1", "Investments_1", "Guilt-Free_1"]
+    parents = ["", "Net Income", "Net Income", "Net Income", "Net Income"]   
+    fixed_costs, savings_goals, investments =  st.session_state.fixed_costs, st.session_state.savings_goals, st.session_state.investments
+    values = [st.session_state.net_income, fixed_costs.Amount.sum(), savings_goals.Amount.sum(), investments.Amount.sum(), st.session_state.guilt_free]
 
-    savings_goals = st.session_state["savings_goals"].copy()
     goals = savings_goals.Goal.tolist()
-    labels += goals
-    parents += ["Savings Goals" for goal in goals]
-    values += savings_goals.Amount.tolist()
+    labels += ["Savings Goals"] + goals
+    ids += ["Savings Goals_2"] + goals
+    parents += ["Savings Goals_1"] + ["Savings Goals_2" for goal in goals]
+    values += [savings_goals.Amount.sum()] + savings_goals.Amount.tolist()
 
-    investments = st.session_state["investments"].copy()
     eaches = investments.Investment.tolist()
-    labels += eaches
-    parents += ["Investments" for each in eaches]
-    values += investments.Amount.tolist()
+    labels += ["Investments"] + eaches
+    ids += ["Investments_2"] + eaches
+    parents += ["Investments_1"] + ["Investments_2" for each in eaches]
+    values += [investments.Amount.sum()] + investments.Amount.tolist()
 
-    fixed_costs = st.session_state["fixed_costs"].copy()
     fixed_costs.loc[fixed_costs.Category == "", "Category"] = "Misc."
     grouped_df = fixed_costs.groupby("Category", as_index = False).Amount.sum()
     categories = grouped_df.Category.tolist()
     labels += categories
+    ids += categories
     parents += ["Fixed Costs" for category in categories]
     values += grouped_df.Amount.tolist()
     labels += fixed_costs["Fixed Cost"].tolist()
+    ids += fixed_costs["Fixed Cost"].tolist()
     parents += fixed_costs.Category.tolist()
     values += fixed_costs.Amount.tolist()
-    st.session_state["sunburst_data"] = [labels, parents, values]
+
+    labels += ["Guilt-Free", "Guilt-Free"]
+    ids += ["Guilt-Free_2", "Guilt-Free_3"]
+    parents += ["Guilt-Free_1", "Guilt-Free_2"]
+    values += [st.session_state.guilt_free, st.session_state.guilt_free]
+
+    st.session_state["sunburst_data"] = [labels, ids, parents, values]
+
 
 def show_progress():
     st.header("Progress:")
@@ -282,7 +285,7 @@ def all_progress_bars():
         fig.add_annotation(
             x=target,
             y=idx,
-            text=f"\t{target_word}: {target:.0f}",
+            text=f"\t\t{target_word}: {target:.0f}",
             showarrow=False,
             font=dict(size=12, color=target_color),
             xanchor='left'

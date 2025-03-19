@@ -1,3 +1,2 @@
 - Validate that all inputs can be entered to the second decimal place and outputs don't expect integers
-- Consider giving the option to limit the number of levels shown in the sunburst chart
 - Improve percent handling so tables are formatted to display percents as desired without changing the float values to and from str
