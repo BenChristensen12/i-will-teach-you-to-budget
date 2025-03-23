@@ -16,9 +16,9 @@ if "completed_all_tasks" not in st.session_state:
     if st.session_state.uploaded_file_name is not None:
         st.success("Previous Session Restored!")
     st.write("Welcome to I Will Teach You to Budget!")
-    st.write("""This free-to-use tool will help you create a budget. The hardest part is remembering the logins to all your accounts.
+    st.markdown("""This free-to-use tool will help you create a budget. The hardest part is remembering the logins to all your accounts.
     We'll also calculate your net worth and plug-in numbers into an investment calculator to show what you could have in retirement.
-    The general approach is inspired by Ramit Sethi's book *I Will Teach You to Be Rich*, so consider checking out his book if you 
+    The general approach is inspired by Ramit Sethi's book *[I Will Teach You to Be Rich](https://a.co/d/dqRq5vG)*, so consider checking out his book if you 
     like this tool.""")
 
     uploaded_file = st.file_uploader("Upload Previously Completed Budget", type='pkl')
@@ -42,10 +42,10 @@ if "completed_all_tasks" not in st.session_state:
 else:
     upload_file = pickle.dumps(dict(st.session_state))
     today = datetime.today().strftime("%Y-%m-%d")  
-    st.write("""Congratulations on completing your budget! Below are summaries of your budget. You can save your progress at any time by clicking the 
+    st.write("""Congratulations on completing your budget! You can save your progress at any time by clicking the 
              download button below. You can upload the downloaded file during your next session.""")      
     st.download_button("Download Your Saved Progress File", data = upload_file, file_name = f"i-will-teach-you-to-budget-session-{today}.pkl", mime = "application/octet-stream")
-    st.write("""Your budget categories have been benchmarked against the goals listed in Ramit Sethi's book *I Will Teach You to be Rich.*
+    st.markdown("""Your budget categories have been benchmarked against the goals listed in Ramit Sethi's book *[I Will Teach You to Be Rich](https://a.co/d/dqRq5vG)*.
              Consider adjusting your budget to meet his percentage goals. When you are satisified, his book details how to automate
              these changes so you can follow-through on your decisions made here. Remember that the retirement calculator is available on the Investments page.""")
     st.header("Budget Overview")

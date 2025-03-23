@@ -54,9 +54,10 @@ if f"completed_{page}"  in st.session_state:
         if "clicked_submit_ui_allocation" not in st.session_state:
             if "clicked_change_ui_allocation" in st.session_state:
                 del st.session_state.clicked_change_ui_allocation
-            st.write("""Choose the places you want unexpected income to go. Every time you get a paycheck 
-                    use these percentages to determine where to send the extra income and how much to send.
-                    Common choices are: taxes, a fun savings goal, investments, and guilt-free spending.""")
+            st.write("""Choose the places you want unexpected income to go. Every time you get such a paycheck 
+                    use these percentages to determine where to send the extra income.
+                    Common choices are: taxes, a fun savings goal, investments, and guilt-free spending.
+                     Unexpected income lives outside the budget.""")
             col1, col2 = st.columns(2)
             percents = np.array([],dtype=int)
             categories = []
@@ -69,9 +70,9 @@ if f"completed_{page}"  in st.session_state:
                     if text:
                         percent_available = 100-percents.sum()
                         if cat < cat_num-1:
-                            percent = st.slider(f"Percent contribution to {text}:", 1, percent_available-(cat_num-cat-1), format="%d%%", key=f"cat_{cat}_percent")
+                            percent = st.number_input(f"Percent contribution to {text}:", min_value=1, max_value=percent_available-(cat_num-cat-1), key=f"cat_{cat}_percent", step=1)
                         else:
-                            percent = st.slider(f"Percent contribution to {text}:", 1, percent_available, value = percent_available, format="%d%%", disabled = True)                    
+                            percent = st.number_input(f"Percent contribution to {text}:", min_value=1, max_value=percent_available, value = percent_available, disabled = True)                    
                         
                         categories.append(text)
                         percents = np.append(percents, percent)

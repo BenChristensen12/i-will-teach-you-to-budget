@@ -32,7 +32,7 @@ else:
             portfolio_values = calculate_portfolio(st.session_state.principal, contribution, st.session_state.rate/100, st.session_state.yr_until)
             
             retirement_income = (portfolio_values[-1]*.027)/12
-            st.write(f"You could expect to have ${retirement_income:.0f} per month through retirement. This assumes 30 years in retirement and a withdrawal rate using the 2.7% rule.")
+            st.markdown(f"You could expect to have ${retirement_income:.0f} per month through retirement (adjusted for inflation). This estimated withdrawal rate uses [the 2.7% rule](https://www.youtube.com/watch?v=1FwgCRIS0Wg&t=30s).")
             dates = pd.date_range(start = pd.Timestamp.now(), periods = 1+(12*st.session_state.yr_until), freq='ME')
             df = pd.DataFrame({'Date': dates, 'Portfolio Value': portfolio_values})
             # Plotting
