@@ -327,6 +327,12 @@ def end_demo():
 
 
 def edit_data(page): 
+    if "clicked_refresh" in st.session_state:
+        del st.session_state.clicked_refresh
+        st.session_state.update(st.session_state.changed_tables)
+        del st.session_state.changed_tables
+        compile_budget()
+        update_percentages()  
     st.session_state["changed_tables"] = dict()
     tables = st.session_state.config["Pages"][page]["tables"].keys()
     for table in tables:
@@ -348,5 +354,6 @@ def edit_data(page):
         page_name = page.replace("_", " ")
         sum_df = sum_df.loc[sum_df.Category == page_name, ["Amount", "Percent", "Goal"]].copy()
         sum_df.rename(columns = {"Amount": page_name}, inplace = True)
+        st.button("Refresh Data", on_click=button_click, args = ("clicked_refresh",))        
         progress_bar(page)        
        
